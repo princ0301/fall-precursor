@@ -1,0 +1,57 @@
+NUM_LANDMARKS = 33
+NUM_CHANNELS = 3
+
+LANDMARK_NAMES = [
+    "nose",
+    "left_eye_inner",
+    "left_eye",
+    "left_eye_outer",
+    "right_eye_inner",
+    "right_eye",
+    "right_eye_outer",
+    "left_ear",
+    "right_ear",
+    "mouth_left",
+    "mouth_right",
+    "left_shoulder",
+    "right_shoulder",
+    "left_elbow",
+    "right_elbow",
+    "left_wrist",
+    "right_wrist",
+    "left_pinky",
+    "right_pinky",
+    "left_index",
+    "right_index",
+    "left_thumb",
+    "right_thumb",
+    "left_hip",
+    "right_hip",
+    "left_knee",
+    "right_knee",
+    "left_ankle",
+    "right_ankle",
+    "left_heel",
+    "right_heel",
+    "left_foot_index",
+    "right_foot_index",
+]
+
+NAME_TO_INDEX = {name: index for index, name in enumerate(LANDMARK_NAMES)}
+
+POSE_CONNECTIONS = [
+    (NAME_TO_INDEX["left_shoulder"], NAME_TO_INDEX["right_shoulder"]),
+    (NAME_TO_INDEX["left_shoulder"], NAME_TO_INDEX["left_elbow"]),
+    (NAME_TO_INDEX["left_elbow"], NAME_TO_INDEX["left_wrist"]),
+    (NAME_TO_INDEX["right_shoulder"], NAME_TO_INDEX["right_elbow"]),
+    (NAME_TO_INDEX["right_elbow"], NAME_TO_INDEX["right_wrist"]),
+    (NAME_TO_INDEX["left_shoulder"], NAME_TO_INDEX["left_hip"]),
+    (NAME_TO_INDEX["right_shoulder"], NAME_TO_INDEX["right_hip"]),
+    (NAME_TO_INDEX["left_hip"], NAME_TO_INDEX["right_hip"]),
+    (NAME_TO_INDEX["left_hip"], NAME_TO_INDEX["left_knee"]),
+    (NAME_TO_INDEX["left_knee"], NAME_TO_INDEX["left_ankle"]),
+    (NAME_TO_INDEX["right_hip"], NAME_TO_INDEX["right_knee"]),
+    (NAME_TO_INDEX["right_knee"], NAME_TO_INDEX["right_ankle"]),
+    (NAME_TO_INDEX["nose"], NAME_TO_INDEX["left_shoulder"]),
+    (NAME_TO_INDEX["nose"], NAME_TO_INDEX["right_shoulder"]),
+]
