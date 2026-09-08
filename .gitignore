@@ -8,3 +8,4 @@ experiments/
 *.ckpt
 .ruff_cache/
 .pytest_cache/
+tests/

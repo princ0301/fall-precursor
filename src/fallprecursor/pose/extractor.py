@@ -9,6 +9,37 @@ from mediapipe.tasks.python import vision
 from fallprecursor.pose.schema import NUM_LANDMARKS, NUM_CHANNELS
 
 
+def extract_pose_sequence_from_images(
+    image_paths: list[Path],
+    model_path: Path,
+    timestamps_ms: list[int],
+    min_detection_confidence: float = 0.5,
+) -> np.ndarray:
+    """Run MediaPipe's PoseLandmarker over a sequence of individual image files.
+
+    image_paths and timestamps_ms must be the same length and already
+    sorted into chronological order; timestamps_ms must be strictly
+    increasing, as required by the Tasks API's VIDEO running mode. Returns
+    the same (F, NUM_LANDMARKS, NUM_CHANNELS) format as extract_pose_sequence.
+    """
+    if len(image_paths) != len(timestamps_ms):
+        raise ValueError("image_paths and timestamps_ms must have the same length")
+
+    landmarker = _build_landmarker(model_path, min_detection_confidence)
+
+    frames = []
+    with landmarker:
+        for image_path, timestamp_ms in zip(image_paths, timestamps_ms):
+            frame = cv2.imread(str(image_path))
+            if frame is None:
+                raise FileNotFoundError(f"could not read image: {image_path}")
+            frames.append(_extract_single_frame(landmarker, frame, timestamp_ms))
+
+    if len(frames) == 0:
+        return np.empty((0, NUM_LANDMARKS, NUM_CHANNELS), dtype=np.float32)
+    return np.stack(frames, axis=0)
+
+
 def get_video_fps(video_path: Path) -> float:
     """Return the video's frames-per-second, or 30.0 if the metadata is missing or invalid."""
     capture = cv2.VideoCapture(str(video_path))
